@@ -25,24 +25,12 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func searchPressed(_ sender: UIButton) {
-        searchTextField.endEditing(true)
-        let city = searchTextField.text
         if let cityname = searchTextField.text {
             print("City name entered : \(cityname)")
+            climaBrain.city = cityname
+            climaBrain.fetchWeather()
         }
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         searchTextField.endEditing(true)
-        //print(searchTextField.text)
-        return true // means we accept the value in text field
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let city = searchTextField.text {
-            climaBrain.city = city
-        }
-        searchTextField.text = ""
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -55,6 +43,20 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
             return false
         }
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchTextField.endEditing(true) // this calls textFieldDidEndEditing method. huh
+        //print(searchTextField.text)
+        return true // means we accept the value in text field
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let city = searchTextField.text {
+            climaBrain.city = city
+        }
+        searchTextField.text = ""
+    }
+
 
     // an idea how to get the activated text field.
     //    func getSelectedTextField() -> UITextField? {
