@@ -8,20 +8,20 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate {
+class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDelegate {
 
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
+    var weatherModel : WeatherModel?
     
     var climaBrain = ClimaBrain()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         searchTextField.delegate = self
-        
+        climaBrain.delegate = self
     }
     
     @IBAction func searchPressed(_ sender: UIButton) {
@@ -58,7 +58,14 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         searchTextField.text = ""
     }
 
-
+    func didUpdateWeather(weather: WeatherModel) {
+        weatherModel = weather
+        if let weather = weatherModel {
+            print("updated weather data : city = \(weather.cityName)")
+        }
+    }
+    
+    
     // an idea how to get the activated text field.
     //    func getSelectedTextField() -> UITextField? {
     //
