@@ -11,6 +11,7 @@ import Foundation
 struct ClimaBrain {
     var city = ""
     var appID = MyOpenWeatherApiKey
+    var weatherID : Int
     
     //http://api.openweathermap.org/data/2.5/weather?q=new%20york&appid=
     func fetchWeather() {
@@ -32,11 +33,23 @@ struct ClimaBrain {
                                             }
                                             
                                             if let safeData = data {
-                                                let dataString = String(data: safeData, encoding: .utf8)
-                                                print(dataString)
+//                                                let dataString = String(data: safeData, encoding: .utf8)
+//                                                print(dataString)
+                                                parseJSON(weatherData : safeData)
                                             }})
             //4. Start the task
             task.resume()
+        }
+    }
+    
+    func parseJSON(weatherData : Data) {
+        let decoder = JSONDecoder()
+        do {
+            let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
+//            print(decodedData.name)
+//            print(decodedData.weather[0].description)
+        } catch {
+            print(error)
         }
     }
     

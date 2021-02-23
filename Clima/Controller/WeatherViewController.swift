@@ -53,6 +53,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let city = searchTextField.text {
             climaBrain.city = city
+            climaBrain.fetchWeather()
         }
         searchTextField.text = ""
     }
