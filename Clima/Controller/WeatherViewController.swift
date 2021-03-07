@@ -38,6 +38,10 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDeleg
         searchTextField.endEditing(true)
     }
     
+    @IBAction func getCurrWeatherFromLocation(_ sender: UIButton) {
+        climaBrain.fetchWeather(lat: climaBrain.lat, lon: climaBrain.lon)
+    }
+    
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if searchTextField.text != ""
         {
@@ -96,6 +100,8 @@ extension WeatherViewController : CLLocationManagerDelegate {
             let lat = location.coordinate.latitude
             let long = location.coordinate.longitude
             print("lattitue : \(lat), long : \(long)")
+            climaBrain.lat = lat
+            climaBrain.lon = long
         }
     }
     

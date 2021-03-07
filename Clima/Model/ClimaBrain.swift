@@ -10,11 +10,19 @@ import Foundation
 
 struct ClimaBrain {
     var city = ""
-    var appID = MyOpenWeatherApiKey
+    var appKey = MyOpenWeatherApiKey
     var delegate : WeatherDelegate?
+    var lat = 0.0
+    var lon = 0.0
     //http://api.openweathermap.org/data/2.5/weather?q=new%20york&appid=
     func fetchWeather() {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&units=imperial&appid=\(appID)"
+        let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&units=imperial&appid=\(appKey)"
+        print("Before requesting : \(urlString)")
+        performRequest(urlString: urlString)
+    }
+    
+    func fetchWeather(lat : Double, lon : Double) {
+        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&units=imperial&appid=\(appKey)"
         print("Before requesting : \(urlString)")
         performRequest(urlString: urlString)
     }
