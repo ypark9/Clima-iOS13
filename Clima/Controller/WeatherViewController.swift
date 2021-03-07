@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDelegate {
 
@@ -15,10 +16,14 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDeleg
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     var weatherModel : WeatherModel?
-    
+    var locationManager  = CLLocationManager()
     var climaBrain = ClimaBrain()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
         // Do any additional setup after loading the view.
         searchTextField.delegate = self
         climaBrain.delegate = self
@@ -64,11 +69,11 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDeleg
             DispatchQueue.main.async {
                 self.temperatureLabel.text = weather.tempatureString;
                 self.conditionImageView.image = UIImage(systemName: weather.condtionName)
+                self.cityLabel.text = weather.cityName
             }
         }
     }
-    
-    
+
     // an idea how to get the activated text field.
     //    func getSelectedTextField() -> UITextField? {
     //
@@ -85,3 +90,16 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDeleg
     //    }
 }
 
+extension WeatherViewController : CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let lat = location.coordinate.latitude
+            let long = location.coordinate.longitude
+            print("lattitue : \(lat), long : \(long)")
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error to get the location: + \(error)")
+    }
+}
